@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logging
 # $ python -m hello
 
 import sys
 from furigana.furigana import split_furigana
 
-logger = logging.getLogger('furigana')
-logger.setLevel('ERROR')
 
 def return_html(text):
     output = ""

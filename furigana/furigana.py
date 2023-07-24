@@ -9,7 +9,7 @@ from xml.sax.saxutils import escape
 import MeCab
 import jaconv
 
-logger = logging.getLogger('furigana')
+from .logger_config import logger
 
 mecab = MeCab.Tagger("-Ochasen")
 
