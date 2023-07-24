@@ -9,6 +9,8 @@ from xml.sax.saxutils import escape
 import MeCab
 import jaconv
 
+logger = logging.getLogger('furigana')
+
 mecab = MeCab.Tagger("-Ochasen")
 
 Text = namedtuple('Text', ['text', 'furigana'])
@@ -30,7 +32,7 @@ def is_kanji_or_number(ch):
     return is_kanji(ch) or ch in "0123456789０１２３４５６７８９"
 
 def split_okurigana(text, hiragana, reversed=False):
-    logging.debug(f'Split okurigana for "{text}" / "{hiragana}"')
+    logger.debug(f'Split okurigana for "{text}" / "{hiragana}"')
 
     split = []
     i = 0  # cursor on the text
@@ -40,7 +42,7 @@ def split_okurigana(text, hiragana, reversed=False):
         start_i = i
         start_j = j
 
-        logging.debug(f'Taking care non kanji parts. i={i}, j={j} ("{text[i]}" / "{hiragana[j]}")')
+        logger.debug(f'Taking care non kanji parts. i={i}, j={j} ("{text[i]}" / "{hiragana[j]}")')
         if not is_kanji_or_number(text[i]):
             while i < len(text) and j < len(hiragana) and not is_kanji_or_number(text[i]):
                 # Increment the hiragana cursor, except for punctuation (not kana nor kanji),
@@ -51,7 +53,7 @@ def split_okurigana(text, hiragana, reversed=False):
                         if not reversed:
                             return split_okurigana(text[::-1], hiragana[::-1], reversed=True)
 
-                        logging.error(f"Kana {hiragana[j]} did not match character {text[i]} ! {text} {hiragana}")
+                        logger.error(f"Kana {hiragana[j]} did not match character {text[i]} ! {text} {hiragana}")
 
                         # Fallback by returning all the remaining text with all the hiragana as furigana
                         split.append(Text(text[start_i:], hiragana[start_j:]))
@@ -60,7 +62,7 @@ def split_okurigana(text, hiragana, reversed=False):
 
                 i += 1
 
-            logging.debug(f'Reached end of non kanji part. i={i}, j={j} ("{text[start_i:i]}" / "{hiragana[start_j:j]}")')
+            logger.debug(f'Reached end of non kanji part. i={i}, j={j} ("{text[start_i:i]}" / "{hiragana[start_j:j]}")')
             split.append(Text(text[start_i:i], None))
 
             if i >= len(text):
@@ -70,16 +72,16 @@ def split_okurigana(text, hiragana, reversed=False):
             start_j = j
 
         # find next kana
-        logging.debug(f'Find next kana in text "{text[i:]}". i={i}')
+        logger.debug(f'Find next kana in text "{text[i:]}". i={i}')
         while i < len(text) and not is_kana_character(text[i]):
             i += 1
 
         if i >= len(text):
-            logging.debug(f'Only kanji left. i={i}, j={j} ("{text[start_i:i]}" / "{hiragana[start_j:len(hiragana)]}")')
+            logger.debug(f'Only kanji left. i={i}, j={j} ("{text[start_i:i]}" / "{hiragana[start_j:len(hiragana)]}")')
             split.append(Text(text[start_i:i], hiragana[start_j:len(hiragana)]))
             break
         
-        logging.debug(f'Get reading for "{text[start_i:i]}". j={j}')
+        logger.debug(f'Get reading for "{text[start_i:i]}". j={j}')
         while (
             j < len(hiragana)
             and (
@@ -89,7 +91,7 @@ def split_okurigana(text, hiragana, reversed=False):
         ):
             j += 1
 
-        logging.debug(f'Got reading "{hiragana[start_j:j]}" for "{text[start_i:i]}"')
+        logger.debug(f'Got reading "{hiragana[start_j:j]}" for "{text[start_i:i]}"')
 
         split.append(Text(text[start_i:i], hiragana[start_j:j]))
 

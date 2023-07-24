@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import logging
 # $ python -m hello
 
 import sys
 from furigana.furigana import split_furigana
 
+logger = logging.getLogger('furigana')
+logger.setLevel('ERROR')
+
 def return_html(text):
     output = ""
     for pair in split_furigana(text):
-        if len(pair)==2:
-            kanji,hira = pair
-            output += "<ruby><rb>{0}</rb><rt>{1}</rt></ruby>".
-                    format(kanji, hira)
+        if len(pair) == 2:
+            kanji, hira = pair
+            output += "<ruby><rb>{0}</rb><rt>{1}</rt></ruby>".format(kanji, hira)
         else:
             output += pair[0]
     return output
@@ -20,10 +22,10 @@ def return_html(text):
 
 def print_html(text):
     for pair in split_furigana(text):
-        if len(pair)==2:
-            kanji,hira = pair
+        if len(pair) == 2:
+            kanji, hira = pair
             print("<ruby><rb>{0}</rb><rt>{1}</rt></ruby>".
-                    format(kanji, hira), end='')
+                  format(kanji, hira), end='')
         else:
             print(pair[0], end='')
     print('')
@@ -31,9 +33,9 @@ def print_html(text):
 
 def print_plaintext(text):
     for pair in split_furigana(text):
-        if len(pair)==2:
-            kanji,hira = pair
-            print("%s(%s)" % (kanja,hira), end='')
+        if len(pair) == 2:
+            kanji, hira = pair
+            print("%s(%s)" % (kanji, hira), end='')
         else:
             print(pair[0], end='')
     print('')

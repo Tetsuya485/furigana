@@ -4,9 +4,10 @@
 import sys
 import furigana
 
+
 def main():
     for pair in furigana.furigana(sys.argv[1]):
-        if len(pair)==2:
+        if len(pair) == 2:
             kanji, hira = pair
             print('%s(%s)' % (kanji, hira))
         else:

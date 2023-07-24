@@ -56,43 +56,43 @@ def test_split_furigana(text, expected_split):
 
 @pytest.mark.parametrize(["text", "hiragana", "expected_split"], [
     (
-        # Reverse parsing example #1
-        "人となり", "ひととなり", [
-            Text(text='人', furigana='ひと'),
-            Text(text='となり', furigana=None)
-        ]
+            # Reverse parsing example #1
+            "人となり", "ひととなり", [
+                Text(text='人', furigana='ひと'),
+                Text(text='となり', furigana=None)
+            ]
     ),
     (
-        # Reverse parsing example #2
-        "短かっ", "みじかかっ", [
-            Text(text='短', furigana='みじか'),
-            Text(text='かっ', furigana=None)
-        ]
+            # Reverse parsing example #2
+            "短かっ", "みじかかっ", [
+                Text(text='短', furigana='みじか'),
+                Text(text='かっ', furigana=None)
+            ]
     ),
     (
-        # ヶ used for が in location name
-        "青木ヶ原", "あおきがはら", [
-            Text(text='青木', furigana='あおき'),
-            Text(text='ヶ', furigana=None),
-            Text(text='原', furigana='はら'),
-        ]
+            # ヶ used for が in location name
+            "青木ヶ原", "あおきがはら", [
+                Text(text='青木', furigana='あおき'),
+                Text(text='ヶ', furigana=None),
+                Text(text='原', furigana='はら'),
+            ]
     ),
     (
-        # Fallback in case of kana mismatch between text and hiragana
-        "あ。あ", "あのあ", [Text(text='あ。あ', furigana='あのあ')]
+            # Fallback in case of kana mismatch between text and hiragana
+            "あ。あ", "あのあ", [Text(text='あ。あ', furigana='あのあ')]
     ),
     (
-        # Dealing with non kanji non kana characters such as "・"
-        "トム・ソーヤーの冒険", "とむそーやーのぼうけん", [
-            Text(text='トム・ソーヤーの', furigana=None),
-            Text(text='冒険', furigana='ぼうけん')
-        ]
+            # Dealing with non kanji non kana characters such as "・"
+            "トム・ソーヤーの冒険", "とむそーやーのぼうけん", [
+                Text(text='トム・ソーヤーの', furigana=None),
+                Text(text='冒険', furigana='ぼうけん')
+            ]
     ),
     (
-        # Dealing with non kanji non kana characters such as "・"
-        "銃・病原菌・鉄", "じゅうびょうげんきんてつ", [
-            Text(text='銃・病原菌・鉄', furigana='じゅうびょうげんきんてつ')
-        ]
+            # Dealing with non kanji non kana characters such as "・"
+            "銃・病原菌・鉄", "じゅうびょうげんきんてつ", [
+                Text(text='銃・病原菌・鉄', furigana='じゅうびょうげんきんてつ')
+            ]
     ),
     ("出会う", "であう", [
         Text(text='出会', furigana='であ'),
