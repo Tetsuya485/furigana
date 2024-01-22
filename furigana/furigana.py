@@ -38,7 +38,7 @@ def split_okurigana(text, hiragana, reversed=False):
     i = 0  # cursor on the text
     j = 0  # cursor on the hiragana
 
-    while i < len(text):
+    while i < len(text) and j < len(hiragana):
         start_i = i
         start_j = j
 
